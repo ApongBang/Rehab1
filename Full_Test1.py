@@ -6,6 +6,7 @@ import os
 import requests
 import json
 import time
+
 mp_drawing = mp.solutions.drawing_utils         # mediapipe 繪圖方法
 mp_drawing_styles = mp.solutions.drawing_styles # mediapipe 繪圖樣式
 mp_holistic = mp.solutions.holistic             # mediapipe 全身偵測方法
