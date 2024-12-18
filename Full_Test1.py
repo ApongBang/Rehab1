@@ -40,6 +40,7 @@ with mp_holistic.Holistic(
         exit()
     start_time = time.time()
     frame_count = 0
+
     
     while True:
         ret1, img1 = cap1.read()
@@ -104,8 +105,6 @@ with mp_holistic.Holistic(
     #                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
     #     if results2.pose_landmarks:
     #         RHL = results2.pose_landmarks
-        frame_time = time.time() - start_time
-        cv2.putText(img2, f"Time: {frame_time:.2f} seconds", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
     #         frame_count += 1
     #         # 計算角度
     #         for joint in joint_list:
@@ -163,13 +162,22 @@ with mp_holistic.Holistic(
     #     mean = statistics.mean(output_list)
     #     # 顯示兩個影片結果
     #     # 顯示兩個影片結果
+        
+        img1 = cv2.flip(img1, 1)
+        img2 = cv2.flip(img2, 1)
+
+        frame_time = time.time() - start_time
+        cv2.putText(img2, f"Time: {frame_time:.2f} seconds", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+
         if frame_time > 0:
             fps = frame_count / frame_time
             cv2.putText(img1, f"FPS: {round(fps, 2)}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(img2, f"FPS: {round(fps, 2)}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+        
         cv2.imshow('oxxostudio1', img1)
         cv2.imshow('oxxostudio2', img2)
-        
+
         if cv2.waitKey(5) == ord('q'):
             break    # 按下 q 鍵停止
     # if mean > 0:
