@@ -2,7 +2,7 @@ import cv2
 import time
 import numpy as np
 
-def save_video(output_file, duration=15, fps=30):
+def save_video(output_file, duration, fps=30):
     # Open the default camera (0)
     cap = cv2.VideoCapture(0)
 
@@ -10,7 +10,7 @@ def save_video(output_file, duration=15, fps=30):
     if not cap.isOpened():
         print("Error: Cannot access the camera")
         return
-
+    #cap = cv2.VideoCapture(0)
     # Get the width and height of the frames
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -105,7 +105,7 @@ def test_camera():
 # Run the camera test
 if __name__ == "__main__":
     #test_camera()
-    save_video("output.mp4",duration =15, fps=30)
+    save_video("output.mp4",duration =30, fps=30)
 
 
 

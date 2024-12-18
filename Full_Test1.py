@@ -28,7 +28,14 @@ target_frames = []
 #[23, 24, 12] [23, 24, 26]
 #[26, 28, 32] 次等
 cap1 = cv2.VideoCapture(0)  
-cap2 = cv2.VideoCapture("Test5.mp4")  
+cap2 = cv2.VideoCapture("Rehab_Vid1.mp4")  
+
+#cap2.set(cv2.CAP_PROP_FRAME_WIDTH, 624)
+#cap2.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+#set frame sizes first
+
+
+
 
 # mediapipe 啟用偵測全身
 with mp_holistic.Holistic(
@@ -50,8 +57,8 @@ with mp_holistic.Holistic(
             print("Cannot receive frame")
             break
     
-        img1 = cv2.resize(img1, (520, 600))
-        img2 = cv2.resize(img2, (520, 600))
+        img1 = cv2.resize(img1, (624, 720))
+        img2 = cv2.resize(img2, (624, 720))
         
         img1_rgb = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)   # 將 BGR 轉換成 RGB
         img2_rgb = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)   # 將 BGR 轉換成 RGB
