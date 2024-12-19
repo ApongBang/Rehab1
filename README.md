@@ -10,4 +10,6 @@ pip 24.2
 
 
 Full_test.py 原本程式碼  
-CV2_Test測試CV2，會儲存15秒mp4影片
+CV2_Test 測試CV2，會儲存15秒mp4影片
+CV2_Test2.py 把MediaPipe 節點繪製於影片上  
+Full_test2.py 比對兩部影片  
