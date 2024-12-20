@@ -17,7 +17,14 @@ joint_list = [[16, 14, 12],[15, 13, 11],[14, 12, 24],[13, 11, 23]]
 joint_list2 = [[24, 12, 11],[23, 11, 12],[12, 24, 23],[11, 23, 24]]
 #([[Right Hip, Right Shoulder, Left Shoulder],[Left Hip, Left Shoulder, Right Shoulder],[Right Shoulder, Right Hip, Left Hip],[Left Shoulder, Left Hip, Right Hip]])
 
+output_list = []
+#儲存
+target_frames = []
 
+frame_number_to_capture = -1  # 初始化為負值，表示還沒有要捕捉的幀
+screenshot_folder = "screenshots"  # 創建一個文件夾以保存截圖
+os.makedirs(screenshot_folder, exist_ok=True) # 如果不存在，則創建文件夾
+screenshot_count = 0
 
 def CalculateAngles(results, img, joint_list, start_time, frame_count, img_scale=(520, 600)):
     """
@@ -65,9 +72,57 @@ def CalculateAngles(results, img, joint_list, start_time, frame_count, img_scale
             cv2.putText(img, str(round(angle, 2)), tuple(np.multiply(b, img_scale).astype(int)),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
     
-    return frame_count
+    return frame_count,angle
 
+def EvaluateFrames(angle1, angle2, angle3, angle4, frame_count, img1, img2, screenshot_folder, screenshot_count, output_list):
+    """
+    Evaluate frame similarity and capture screenshots for significant errors.
 
+    Args:
+        angle1 (float): First angle from real-time data.
+        angle2 (float): Second angle from reference data.
+        angle3 (float): Third angle from real-time data.
+        angle4 (float): Fourth angle from reference data.
+        frame_count (int): Current frame count.
+        img1 (numpy.ndarray): Real-time image frame.
+        img2 (numpy.ndarray): Reference image frame.
+        screenshot_folder (str): Folder to save screenshots.
+        screenshot_count (int): Current count of screenshots taken.
+        output_list (list): List to store error rates for statistical analysis.
+
+    Returns:
+        tuple: Updated screenshot_count and output_list.
+    """
+    # Calculate angle differences and normalize
+    dd1 = angle1 - angle2
+    mis1 = dd1 * 1.6 / 180
+    dd2 = angle3 - angle4
+    mis2 = dd2 * 0.4 / 180
+    mis3 = (mis1 + mis2) * 100
+
+    # If the error exceeds thresholds, capture screenshots
+    if mis3 > 50:
+        frame_number_to_capture = frame_count
+        screenshot_name = os.path.join(screenshot_folder, f"standard_{frame_number_to_capture}.png")
+        screenshot_name2 = os.path.join(screenshot_folder, f"user_{frame_number_to_capture}.png")
+        cv2.imwrite(screenshot_name, img1)  # Save standard frame
+        cv2.imwrite(screenshot_name2, img2)  # Save user frame
+        screenshot_count += 1
+        print(f"Captured screenshot at frame {frame_number_to_capture}")
+
+        # Break after capturing 5 screenshots
+        if screenshot_count >= 5:
+            return screenshot_count, output_list
+
+    # For maximum error, save an additional screenshot
+    if mis3 > 60:
+        frame_number_to_capture = frame_count
+        screenshot_namemax = os.path.join(screenshot_folder, f"standard_{frame_number_to_capture}.png")
+
+    # Append error rate to the output list
+    output_list.append(mis3)
+
+    return screenshot_count, output_list
 
 
 
@@ -120,34 +175,20 @@ with mp_holistic.Holistic(
             landmark_drawing_spec=mp_drawing_styles
             .get_default_pose_landmarks_style())
         
-        frame_count = CalculateAngles(results1, img1, joint_list, start_time, frame_count)
+        frame_count,angle1 = CalculateAngles(results1, img1, joint_list, start_time, frame_count)
         frame_time = time.time() - start_time
-        frame_count = CalculateAngles(results2, img2, joint_list, start_time, frame_count)
-        
-        # if results1.pose_landmarks:
-        #     RHL = results1.pose_landmarks
-        #     frame_time = time.time() - start_time
-        #     cv2.putText(img1, f"Time: {frame_time:.2f} seconds", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-        #     frame_count += 1
-        #     # 計算角度
-        #     for joint in joint_list:
-                
-        #         a = np.array([RHL.landmark[joint[0]].x, RHL.landmark[joint[0]].y])
-        #         b = np.array([RHL.landmark[joint[1]].x, RHL.landmark[joint[1]].y])
-        #         c = np.array([RHL.landmark[joint[2]].x, RHL.landmark[joint[2]].y])
-        #         # 計算弧度
-        #         radians_fingers = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
-        #         angle1 = np.abs(radians_fingers * 180.0 / np.pi)  # 弧度转角度
-
-        #         if angle1 > 180.0:
-        #             angle1 = 360 - angle1
-        #         cv2.putText(img1, str(round(angle1, 2)), tuple(np.multiply(b, [520,600]).astype(int)),
-        #                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
-
-
-
-    
+        frame_count,angle2 = CalculateAngles(results2, img2, joint_list, start_time, frame_count)
         frame_time = time.time() - start_time
+        frame_count,angle3 = CalculateAngles(results1, img1, joint_list2, start_time, frame_count)
+        frame_time = time.time() - start_time
+        frame_count,angle4 = CalculateAngles(results2, img2, joint_list2, start_time, frame_count)
+        frame_time = time.time() - start_time
+
+        screenshot_count, output_list = EvaluateFrames(
+        angle1, angle2, angle3, angle4, frame_count, img1, img2,
+        screenshot_folder, screenshot_count, output_list
+    )
+
 
         #print(f" frame_time data type is :{type(frame_time)}") 
         #frame_time is float 

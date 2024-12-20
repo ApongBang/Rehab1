@@ -15,7 +15,7 @@ print(f"OpenCV Version: {cv2.__version__}")
 print(f"MediaPipe Version: {mp.__version__}")
 print(f"NumPy Version: {np.__version__}")
  
-cap2 = cv2.VideoCapture("Rehab_Vid1.mp4")  
+cap2 = cv2.VideoCapture("output.mp4")  
 
 # mediapipe 啟用偵測全身
 with mp_holistic.Holistic(
