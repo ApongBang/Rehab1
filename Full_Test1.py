@@ -74,25 +74,25 @@ with mp_holistic.Holistic(
         mp_drawing.draw_landmarks(img2, results2.pose_landmarks, mp_holistic.POSE_CONNECTIONS,
                                   landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
           
-    #     if results1.pose_landmarks:
-    #         RHL = results1.pose_landmarks
-    #         frame_time = time.time() - start_time
-    #         cv2.putText(img1, f"Time: {frame_time:.2f} seconds", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-    #         frame_count += 1
-    #         # 計算角度
-    #         for joint in joint_list:
+        if results1.pose_landmarks:
+            RHL = results1.pose_landmarks
+            frame_time = time.time() - start_time
+            cv2.putText(img1, f"Time: {frame_time:.2f} seconds", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            frame_count += 1
+            # 計算角度
+            for joint in joint_list:
                 
-    #             a = np.array([RHL.landmark[joint[0]].x, RHL.landmark[joint[0]].y])
-    #             b = np.array([RHL.landmark[joint[1]].x, RHL.landmark[joint[1]].y])
-    #             c = np.array([RHL.landmark[joint[2]].x, RHL.landmark[joint[2]].y])
-    #             # 計算弧度
-    #             radians_fingers = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
-    #             angle1 = np.abs(radians_fingers * 180.0 / np.pi)  # 弧度转角度
+                a = np.array([RHL.landmark[joint[0]].x, RHL.landmark[joint[0]].y])
+                b = np.array([RHL.landmark[joint[1]].x, RHL.landmark[joint[1]].y])
+                c = np.array([RHL.landmark[joint[2]].x, RHL.landmark[joint[2]].y])
+                # 計算弧度
+                radians_fingers = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
+                angle1 = np.abs(radians_fingers * 180.0 / np.pi)  # 弧度转角度
 
-    #             if angle1 > 180.0:
-    #                 angle1 = 360 - angle1
-    #             cv2.putText(img1, str(round(angle1, 2)), tuple(np.multiply(b, [640, 480]).astype(int)),
-    #                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+                if angle1 > 180.0:
+                    angle1 = 360 - angle1
+                cv2.putText(img1, str(round(angle1, 2)), tuple(np.multiply(b, [640, 480]).astype(int)),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
     #     if results1.pose_landmarks:
     #         RHL = results1.pose_landmarks
             
