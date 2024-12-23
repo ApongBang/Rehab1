@@ -147,27 +147,27 @@ with mp_holistic.Holistic(
     #             cv2.putText(img2, str(round(angle4, 2)), tuple(np.multiply(b, [640, 480]).astype(int)),
     #                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
     #         #計算誤差率(解釋)   
-    #         dd1 = angle1-angle2
-    #         mis1 = dd1*1.6/180
-    #         dd2 = angle3-angle4
-    #         mis2 = dd2*0.4/180
-    #         mis3 = (mis1+mis2)*100
-    #         if mis3  > 50:
-    #             frame_number_to_capture = frame_count  #要捕捉的幀數
-    #             screenshot_name = os.path.join(screenshot_folder, f"standard_{frame_number_to_capture}.png")
-    #             screenshot_name2 = os.path.join(screenshot_folder, f"user_{frame_number_to_capture}.png")
-    #             cv2.imwrite(screenshot_name, img1)  # 保存截圖
-    #             cv2.imwrite(screenshot_name2, img2)
-    #             screenshot_count += 1
-    #             print(f"在幀 {frame_number_to_capture} 時捕捉截圖")
-    #         if screenshot_count >= 5:
-    #            break
-    #         if mis3  > 60:
-    #             frame_number_to_capture = frame_count  #要捕捉的幀數
-    #             screenshot_namemax = os.path.join(screenshot_folder, f"standard_{frame_number_to_capture}.png")
+            dd1 = angle1-angle2
+            mis1 = dd1*1.6/180
+            dd2 = angle3-angle4
+            mis2 = dd2*0.4/180
+            mis3 = (mis1+mis2)*100
+            if mis3  > 50:
+                frame_number_to_capture = frame_count  #要捕捉的幀數
+                screenshot_name = os.path.join(screenshot_folder, f"standard_{frame_number_to_capture}.png")
+                screenshot_name2 = os.path.join(screenshot_folder, f"user_{frame_number_to_capture}.png")
+                cv2.imwrite(screenshot_name, img1)  # 保存截圖
+                cv2.imwrite(screenshot_name2, img2)
+                screenshot_count += 1
+                print(f"在幀 {frame_number_to_capture} 時捕捉截圖")
+            if screenshot_count >= 5:
+               break
+            if mis3  > 60:
+                frame_number_to_capture = frame_count  #要捕捉的幀數
+                screenshot_namemax = os.path.join(screenshot_folder, f"standard_{frame_number_to_capture}.png")
                 
-    #         output_list.append(mis3)
-    #     mean = statistics.mean(output_list)
+            output_list.append(mis3)
+        mean = statistics.mean(output_list)
     #     # 顯示兩個影片結果
     #     # 顯示兩個影片結果
         
