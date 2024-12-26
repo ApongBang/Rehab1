@@ -1,3 +1,6 @@
+# Compares similarity of two videos with Kmean
+
+
 import cv2
 import mediapipe as mp
 import numpy as np

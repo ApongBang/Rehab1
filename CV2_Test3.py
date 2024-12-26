@@ -1,3 +1,5 @@
+# Display one video and record the camera 
+
 import cv2
 import time
 
@@ -69,4 +71,4 @@ def save_and_display_video(video_file, output_file, duration, fps=30):
 
 # Run the script
 if __name__ == "__main__":
-    save_and_display_video("Rehab_Vid1.mp4", "output.mp4", duration=30, fps=30)
+    save_and_display_video("Rehab_Vid1.mp4", "output2.mp4", duration=30, fps=30)
