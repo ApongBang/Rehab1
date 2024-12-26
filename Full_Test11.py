@@ -51,8 +51,8 @@ def capture_screenshot(dtw_distance, frame_count, img1, img2, screenshot_folder,
         print(f"Captured screenshot at frame {frame_number_to_capture} for DTW distance {dtw_distance:.2f}")
 
 # Video input
-cap1 = cv2.VideoCapture("output2.mp4")
-cap2 = cv2.VideoCapture("Rehab_Vid2.mp4")
+cap1 = cv2.VideoCapture("Rehab_Vid1.mp4")
+cap2 = cv2.VideoCapture("output2.mp4")
 
 pose_sequence1 = []
 pose_sequence2 = []
