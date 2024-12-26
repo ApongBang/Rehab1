@@ -65,7 +65,7 @@ def evaluate_pose_similarity(cluster_similarity, frame_count, img1, img2, screen
         print(f"Captured screenshot at frame {frame_number_to_capture}")
     return screenshot_count
 
-cap1 = cv2.VideoCapture("output.mp4") 
+cap1 = cv2.VideoCapture("output2.mp4") 
 cap2 = cv2.VideoCapture("Rehab_Vid2.mp4")  
 
 pose_sequence1 = []
